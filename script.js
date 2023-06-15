@@ -21,6 +21,8 @@ class Particle {
         this.maxLength = Math.floor(Math.random() * 200 + 10);
         this.angle = 0;
         this.timer = this.maxLength * 2;
+        this.colors = ['#780000', '#c1121f', '#fdf0d5', '#003049', '#669bbc'] 
+        this.color = this.colors[Math.floor(Math.random() * this.colors.length)];
     }
     draw(context){
         context.beginPath();
@@ -28,6 +30,7 @@ class Particle {
         for (let i = 0; i < this.history.length; i++){
             context.lineTo(this.history[i].x, this.history[i].y);
         }
+        context.strokeStyle = this.color;
         context.stroke();
     }
     update(){
