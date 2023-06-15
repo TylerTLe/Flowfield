@@ -72,7 +72,14 @@ class Effect {
         this.flowField = [];
         this.curve = 3;
         this.zoom = 0.04;
+        this.debug = false;
         this.init()
+
+        window.addEventListener('keydown', e => {
+            console.log(e)
+            if (e.key === 'd') this.debug = !this.debug;
+        });
+
      }
      init(){
         // creates flow field
@@ -94,7 +101,7 @@ class Effect {
      }
      drawGrid(context){
         context.save();
-        context.strokeStyle = 'red'
+        context.strokeStyle = 'Teal'
         context.lineWidth = 0.3;
         for(let c = 0; c < this.cols; c++) {
             context.beginPath()
@@ -111,7 +118,7 @@ class Effect {
         context.restore();
      }
      render(context){
-        this.drawGrid(context);
+        if (this.debug) this.drawGrid(context);
         this.particles.forEach(particle => {
             particle.draw(context);
             particle.update();
