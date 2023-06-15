@@ -83,7 +83,6 @@ class Effect {
             console.log(e)
             if (e.key === 'd') this.debug = !this.debug;
         });
-
      }
      init(){
         // creates flow field

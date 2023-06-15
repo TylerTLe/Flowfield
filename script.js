@@ -21,7 +21,7 @@ class Particle {
         this.maxLength = Math.floor(Math.random() * 200 + 10);
         this.angle = 0;
         this.timer = this.maxLength * 2;
-        this.colors = ['#780000', '#c1121f', '#fdf0d5', '#003049', '#669bbc'] 
+        this.colors = ['#10451d', '#155d27', '#1a7431', '#208b3a', '#25a244', '#2dc653', '#4ad66d', '#6ede8a', '#92e6a7', '#b7efc5'] 
         this.color = this.colors[Math.floor(Math.random() * this.colors.length)];
     }
     draw(context){
@@ -64,17 +64,18 @@ class Particle {
 }
 
 class Effect {
-     constructor(width,height){
-        this.width = width;
-        this.height = height;
+     constructor(canvas){
+        this.canvas = canvas;
+        this.width = this.canvas.width;
+        this.height = this.canvas.height;
         this.particles = [];
         this.numberOfParticles = 2000;
-        this.cellSize = 20;
+        this.cellSize = 50;
         this.rows;
         this.cols;
         this.flowField = [];
-        this.curve = 3;
-        this.zoom = 0.04;
+        this.curve = 1;
+        this.zoom = 0.09;
         this.debug = false;
         this.init()
 
@@ -82,7 +83,9 @@ class Effect {
             console.log(e)
             if (e.key === 'd') this.debug = !this.debug;
         });
-
+        window.addEventListener('resize', e => {
+            this.resize(e.target.innerWidth, e.target.innerHeight)
+        })
      }
      init(){
         // creates flow field
@@ -95,8 +98,8 @@ class Effect {
                 this.flowField.push(angle);
             }
         }
-
         // create particles
+        this.particles = [];
         for (let i = 0; i < this.numberOfParticles; i++){
             this.particles.push(new Particle(this))
         }
@@ -120,6 +123,13 @@ class Effect {
         }
         context.restore();
      }
+     resize(width,height){
+        this.canvas.width = width;
+        this.canvas.height = height;
+        this.width = this.canvas.width;
+        this.height = this.canvas.height;
+        this.init();
+     }
      render(context){
         if (this.debug) this.drawGrid(context);
         this.particles.forEach(particle => {
@@ -129,7 +139,7 @@ class Effect {
      }
 }
 
-const effect = new Effect(canvas.width, canvas.height);
+const effect = new Effect(canvas);
 effect.render(ctx);
 console.log(effect);
 
