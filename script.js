@@ -21,7 +21,7 @@ class Particle {
         this.maxLength = Math.floor(Math.random() * 200 + 10);
         this.angle = 0;
         this.timer = this.maxLength * 2;
-        this.colors = ['#10451d', '#155d27', '#1a7431', '#208b3a', '#25a244', '#2dc653', '#4ad66d', '#6ede8a', '#92e6a7', '#b7efc5'] 
+        this.colors = ['#606c38', '#283618', '#fefae01', '#dda15e', '#bc6c25'] 
         this.color = this.colors[Math.floor(Math.random() * this.colors.length)];
     }
     draw(context){
@@ -69,13 +69,13 @@ class Effect {
         this.width = this.canvas.width;
         this.height = this.canvas.height;
         this.particles = [];
-        this.numberOfParticles = 2000;
-        this.cellSize = 50;
+        this.numberOfParticles = 1000;
+        this.cellSize = 20;
         this.rows;
         this.cols;
         this.flowField = [];
-        this.curve = 1;
-        this.zoom = 0.09;
+        this.curve = 6;
+        this.zoom = 0.07;
         this.debug = false;
         this.init()
 
@@ -94,7 +94,7 @@ class Effect {
         this.flowField = [];
         for (let y = 0; y < this.rows; y++){
             for (let x = 0; x < this.cols; x++){
-                let angle = (Math.cos(x * this.zoom) + Math.sin(y * this.zoom) * this.curve);
+                let angle = (Math.cos(x * this.zoom) + Math.sin(y * this.zoom) + this.curve);
                 this.flowField.push(angle);
             }
         }
