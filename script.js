@@ -21,7 +21,7 @@ class Particle {
         this.maxLength = Math.floor(Math.random() * 200 + 10);
         this.angle = 0;
         this.timer = this.maxLength * 2;
-        this.colors = ['#606c38', '#283618', '#fefae01', '#dda15e', '#bc6c25'] 
+        this.colors = ['#7400B8', '#6930C3', '#5E60CE', '#5390D9', '#4EA8DE', '#48BFE3', '#56CFE1', '#64DFDF', '#72EFDD', '#80FFDB'] 
         this.color = this.colors[Math.floor(Math.random() * this.colors.length)];
     }
     draw(context){
@@ -64,8 +64,9 @@ class Particle {
 }
 
 class Effect {
-     constructor(canvas){
+     constructor(canvas, ctx){
         this.canvas = canvas;
+        this.context = ctx;
         this.width = this.canvas.width;
         this.height = this.canvas.height;
         this.particles = [];
@@ -76,7 +77,7 @@ class Effect {
         this.flowField = [];
         this.curve = 6;
         this.zoom = 0.07;
-        this.debug = false;
+        this.debug = true;
         this.init()
 
         window.addEventListener('keydown', e => {
@@ -87,14 +88,28 @@ class Effect {
             this.resize(e.target.innerWidth, e.target.innerHeight)
         })
      }
+     drawText(){
+        this.context.font = '500px Impact';
+        this.context.textAlign = 'center';
+        this.context.textBaseline = 'middle';
+        this.context.fillText('JS', this.width * 0.5, this.height * 0.5);
+     }
      init(){
         // creates flow field
         this.rows = Math.floor(this.height / this.cellSize);
         this.cols = Math.floor(this.width / this.cellSize);
         this.flowField = [];
+
+        //  draw text
+        this.drawText();
+
+        // scan pixel data
+        const pixels = this.context.getImageData(0, 0, this.width, this.height);
+
+
         for (let y = 0; y < this.rows; y++){
             for (let x = 0; x < this.cols; x++){
-                let angle = (Math.cos(x * this.zoom) + Math.sin(y * this.zoom) + this.curve);
+                let angle = (Math.cos(x * this.zoom) + Math.sin(y * this.zoom) * this.curve);
                 this.flowField.push(angle);
             }
         }
@@ -105,23 +120,23 @@ class Effect {
         }
         this.particles.push(new Particle(this));
      }
-     drawGrid(context){
-        context.save();
-        context.strokeStyle = 'Teal'
-        context.lineWidth = 0.3;
+     drawGrid(){
+        this.context.save();
+        this.context.strokeStyle = 'Teal'
+        this.context.lineWidth = 0.3;
         for(let c = 0; c < this.cols; c++) {
-            context.beginPath()
-            context.moveTo(this.cellSize * c, 0);
-            context.lineTo(this.cellSize * c, this.height)
-            context.stroke()
+            this.context.beginPath()
+            this.context.moveTo(this.cellSize * c, 0);
+            this.context.lineTo(this.cellSize * c, this.height)
+            this.context.stroke()
         }
         for (let r = 0; r < this.rows; r++){
-            context.beginPath();
-            context.moveTo(0,this.cellSize * r);
-            context.lineTo(this.width, this.cellSize * r);
-            context.stroke();
+            this.context.beginPath();
+            this.context.moveTo(0,this.cellSize * r);
+            this.context.lineTo(this.width, this.cellSize * r);
+            this.context.stroke();
         }
-        context.restore();
+        this.context.restore();
      }
      resize(width,height){
         this.canvas.width = width;
@@ -130,22 +145,23 @@ class Effect {
         this.height = this.canvas.height;
         this.init();
      }
-     render(context){
-        if (this.debug) this.drawGrid(context);
+     render(){
+        if (this.debug) {
+            this.drawGrid();
+            this.drawText();
+        }
         this.particles.forEach(particle => {
-            particle.draw(context);
+            particle.draw(this.context);
             particle.update();
         });
      }
 }
 
-const effect = new Effect(canvas);
-effect.render(ctx);
-console.log(effect);
+const effect = new Effect(canvas, ctx);
 
 function animate(){
     ctx.clearRect(0,0, canvas.width, canvas.height);
-    effect.render(ctx);
+    effect.render();
     requestAnimationFrame(animate);
 }
 animate();
