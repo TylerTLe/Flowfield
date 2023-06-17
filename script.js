@@ -1,8 +1,8 @@
 const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
 
-canvas.width = 1500;
-canvas.height = 500;
+canvas.width = 700;
+canvas.height = 700;
 
 // Canvas settings
 ctx.fillStyle = 'white';
@@ -16,7 +16,7 @@ class Particle {
         this.y = Math.floor(Math.random() * this.effect.height);
         this.speedX;
         this.speedY;
-        this.speedModifier = Math.floor(Math.random() * 5 + 1); // controls speed
+        this.speedModifier = Math.floor(Math.random() * 3 + 1); // controls speed
         this.history = [{x: this.x, y: this.y}]
         this.maxLength = Math.floor(Math.random() * 60 + 10); // controls length of pixel strands
         this.angle = 0;
@@ -101,11 +101,12 @@ class Effect {
         this.width = this.canvas.width;
         this.height = this.canvas.height;
         this.particles = [];
-        this.numberOfParticles = 4000;
+        this.numberOfParticles = 2000;
         this.cellSize = 1;
         this.rows;
         this.cols;
         this.flowField = [];
+        this.image = document.getElementById('star');
         // this.curve = 5;
         // this.zoom = 0.07;
         this.debug = false;
@@ -144,7 +145,12 @@ class Effect {
         gradient3.addColorStop(0.8,'rgb(0,0,0)');
 
         this.context.fillStyle = gradient1;
-        this.context.fillText('Welcome', this.width * 0.5, this.height * 0.5, this.width);
+        this.context.fillText('JS', this.width * 0.5, this.height * 0.5, this.width);
+     }
+     drawFlowFieldImage(){
+        let imageSize = this.width * 0.7;
+
+        this.context.drawImage(this.image,this.width * 0.5 - imageSize * 0.5 ,this.height * 0.5 - imageSize * 0.5, imageSize,imageSize);
      }
      init(){
         // creates flow field
@@ -152,8 +158,8 @@ class Effect {
         this.cols = Math.floor(this.width / this.cellSize);
         this.flowField = [];
 
-        //  draw text
-        this.drawText();
+        //  draw image
+        this.drawFlowFieldImage();
 
         // scan pixel data
         const pixels = this.context.getImageData(0, 0, this.width, this.height).data;
@@ -164,7 +170,7 @@ class Effect {
                 const green = pixels[index + 1];
                 const blue = pixels[index + 2];
                 const alpha = pixels[index + 3];
-                const grayscale = (red + green + blue) /3;
+                const grayscale = (red + green + blue) / 3;
                 const colorAngle = ((grayscale/255) * 6.28).toFixed(2);
                 this.flowField.push({
                     x: x,
@@ -184,7 +190,7 @@ class Effect {
      }
      drawGrid(){
         this.context.save();
-        this.context.strokeStyle = 'Teal'
+        this.context.strokeStyle = 'White'
         this.context.lineWidth = 0.3;
         for(let c = 0; c < this.cols; c++) {
             this.context.beginPath()
@@ -210,7 +216,7 @@ class Effect {
      render(){
         if (this.debug) {
             this.drawGrid();
-            this.drawText();
+            this.drawFlowFieldImage()
         }
         this.particles.forEach(particle => {
             particle.draw(this.context);

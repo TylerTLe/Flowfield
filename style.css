@@ -14,4 +14,9 @@ canvas {
 
 body{
     background-color: black;
+    overflow: hidden;
+}
+
+#star {
+    display: none;
 }
