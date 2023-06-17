@@ -16,12 +16,12 @@ class Particle {
         this.y = Math.floor(Math.random() * this.effect.height);
         this.speedX;
         this.speedY;
-        this.speedModifier = Math.floor(Math.random() * 3 + 1); // controls speed
+        this.speedModifier = Math.floor(Math.random() * 2 + 1); // controls speed
         this.history = [{x: this.x, y: this.y}]
         this.maxLength = Math.floor(Math.random() * 60 + 10); // controls length of pixel strands
         this.angle = 0;
         this.newAngle = 0;
-        this.angleCorrector = Math.random() * 0.5 + 0.01; // controls tightness of correction
+        this.angleCorrector = Math.random() * 1 + 0.01; // controls tightness of correction
         this.timer = this.maxLength * 2;
         this.red = 0;
         this.green = 122;
@@ -113,13 +113,11 @@ class Effect {
         this.height = this.canvas.height;
         this.particles = [];
         this.numberOfParticles = 2000;
-        this.cellSize = 1;
+        this.cellSize = 5;
         this.rows;
         this.cols;
         this.flowField = [];
         this.image = document.getElementById('star');
-        // this.curve = 5;
-        // this.zoom = 0.07;
         this.debug = false;
         this.init()
 
