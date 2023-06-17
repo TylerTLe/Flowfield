@@ -24,7 +24,7 @@ class Particle {
         this.angleCorrector = Math.random() * 1 + 0.01; // controls tightness of correction
         this.timer = this.maxLength * 2;
         this.red = 0;
-        this.green = 122;
+        this.green = 0;
         this.blue = 0;
         this.color = 'rgb(' + this.red + ',' + this.green + ',' + this.blue + ')';
     }
@@ -134,7 +134,6 @@ class Effect {
         this.context.textAlign = 'center';
         this.context.textBaseline = 'middle';
 
-
         const gradient1 = this.context.createLinearGradient(0,0,this.width,this.height)
         gradient1.addColorStop(0.2,'rgb(255,0,0)');
         gradient1.addColorStop(0.4,'rgb(0,255,0)');
@@ -153,7 +152,7 @@ class Effect {
         gradient3.addColorStop(0.6,'rgb(0,0,255)');
         gradient3.addColorStop(0.8,'rgb(0,0,0)');
 
-        this.context.fillStyle = gradient1;
+        this.context.fillStyle = gradient3;
         this.context.fillText('JS', this.width * 0.5, this.height * 0.5, this.width);
      }
      drawFlowFieldImage(){
