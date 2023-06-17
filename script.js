@@ -57,9 +57,9 @@ class Particle {
                 }
                 // Color
                 if (flowfieldIndex.alpha > 0){
-                    this.red = flowfieldIndex.red;
-                    this.green = flowfieldIndex.green;
-                    this.blue = flowfieldIndex.blue;
+                    this.red === flowfieldIndex.red ? this.red : this.red += (flowfieldIndex.red -this.red) * 0.1;
+                    this.green === flowfieldIndex.green ? this.green : this.green += (flowfieldIndex.green - this.green) * 0.1;
+                    this.blue === flowfieldIndex.blue ? this.blue : this.blue += (flowfieldIndex.blue - this.green) * 0.1;
                     this.color = 'rgb(' + this.red + ',' + this.green + ',' + this.blue + ')';
                 }
             }
@@ -83,7 +83,7 @@ class Particle {
         let attempts = 0;
         let resetSuccess = false;
 
-        while (attempts < 10 && !resetSuccess){
+        while (attempts < 100 && !resetSuccess){
             attempts++;
             let textIndex = Math.floor(Math.random() * this.effect.flowField.length);
             if (this.effect.flowField[textIndex].alpha > 0){
@@ -205,7 +205,7 @@ class Effect {
      drawGrid(){
         this.context.save();
         this.context.strokeStyle = 'White'
-        this.context.lineWidth = 0.3;
+        this.context.lineWidth = 0.1;
         for(let c = 0; c < this.cols; c++) {
             this.context.beginPath()
             this.context.moveTo(this.cellSize * c, 0);
