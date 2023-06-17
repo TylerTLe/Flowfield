@@ -23,8 +23,10 @@ class Particle {
         this.newAngle = 0;
         this.angleCorrector = Math.random() * 0.5 + 0.01; // controls tightness of correction
         this.timer = this.maxLength * 2;
-        this.colors = ['#DAD7CD', '#A3B18A', '#588157', '#3A5A40', '#344E41'] 
-        this.color = this.colors[Math.floor(Math.random() * this.colors.length)];
+        this.red = 0;
+        this.green = 122;
+        this.blue = 0;
+        this.color = 'rgb(' + this.red + ',' + this.green + ',' + this.blue + ')';
     }
     draw(context){
         context.beginPath();
@@ -42,14 +44,23 @@ class Particle {
             let y = Math.floor(this.y / this.effect.cellSize);
             let index = y * this.effect.cols + x;
 
-            if (this.effect.flowField[index]){
-                this.newAngle = this.effect.flowField[index].colorAngle;
+            let flowfieldIndex = this.effect.flowField[index]
+            if (flowfieldIndex){
+                // Motion
+                this.newAngle = flowfieldIndex.colorAngle;
                 if (this.angle > this.newAngle){
                     this.angle -= this.angleCorrector;  
                 } else if (this.angle < this.newAngle){
                     this.angle += this.angleCorrector;  
                 } else {
                     this.angle = this.newAngle;
+                }
+                // Color
+                if (flowfieldIndex.alpha > 0){
+                    this.red = flowfieldIndex.red;
+                    this.green = flowfieldIndex.green;
+                    this.blue = flowfieldIndex.blue;
+                    this.color = 'rgb(' + this.red + ',' + this.green + ',' + this.blue + ')';
                 }
             }
             this.speedX = Math.cos(this.angle);
@@ -175,6 +186,9 @@ class Effect {
                 this.flowField.push({
                     x: x,
                     y: y,
+                    red:red,
+                    green:green,
+                    blue:blue,
                     alpha: alpha,
                     colorAngle: colorAngle
                 });
