@@ -1,8 +1,8 @@
 const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
 
-canvas.width = 700;
-canvas.height = 700;
+canvas.width = 1200;
+canvas.height = 1200;
 
 // Canvas settings
 ctx.fillStyle = 'white';
